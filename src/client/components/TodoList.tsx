@@ -129,7 +129,7 @@ export const TodoList = () => {
                 aria-hidden={true}
                 focusable={false}
               />
-              <span class="sr-only">Delete</span>
+              <span className="sr-only">Delete</span>
             </button>
           </div>
         </li>
