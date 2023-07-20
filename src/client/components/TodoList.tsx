@@ -75,6 +75,12 @@ export const TodoList = () => {
     },
   })
 
+  const { mutate: deleteTodo } = api.todo.delete.useMutation({
+    onSuccess: () => {
+      apiContext.todo.getAll.refetch()
+    },
+  })
+
   return (
     <ul className="grid grid-cols-1 gap-y-3">
       {todos.map((todo) => (
@@ -101,13 +107,28 @@ export const TodoList = () => {
             </Checkbox.Root>
 
             <label
-              className={`block pl-3 font-medium ${
+              className={`block flex-1 pl-3 font-medium ${
                 todo.status === 'completed' ? 'line-through' : ''
               }`}
               htmlFor={String(todo.id)}
             >
               {todo.body}
             </label>
+            <button
+              className="p-1"
+              onClick={() => {
+                deleteTodo({
+                  id: todo.id,
+                })
+              }}
+            >
+              <XMarkIcon
+                className="h-6 w-6 text-gray-700"
+                aria-hidden={true}
+                focusable={false}
+              />
+              <span class="sr-only">Delete</span>
+            </button>
           </div>
         </li>
       ))}
