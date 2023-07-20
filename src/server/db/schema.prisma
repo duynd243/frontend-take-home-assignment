@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator kysely {
+  provider  = "prisma-kysely"
+  output    = "../db"
+  fileName  = "types.ts"
+  camelCase = true
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./db.sqlite"
+}
+
+model Todo {
+  id        Int          @map("id")         @id @default(autoincrement())
+  body      String       @map("body")
+  createdAt DateTime     @map("created_at") @default(now())
+  updatedAt DateTime     @map("updated_at") @default(now()) @updatedAt
+
+  statuses  TodoStatus[]
+
+  @@map("todos")
+}
+
+model TodoStatus {
+  id        Int      @map("id")         @id @default(autoincrement())
+  status    String   @map("status")
+  todoId    Int      @map("todo_id")
+  createdAt DateTime @map("created_at") @default(now())
+  updatedAt DateTime @map("updated_at") @default(now()) @updatedAt
+
+  Todo      Todo     @relation(fields: [todoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([todoId])
+  @@index([status])
+  @@index([createdAt])
+
+  @@map("todo_statuses")
+}
