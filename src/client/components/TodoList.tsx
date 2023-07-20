@@ -64,11 +64,15 @@ import { api } from '@/utils/client/api'
  *  - https://auto-animate.formkit.com
  */
 
-export const TodoList = () => {
+type Props = {
+  status: 'completed' | 'pending' | 'all'
+}
+
+export const TodoList = ({ status }: Props) => {
   const apiContext = api.useContext()
   const [parent] = useAutoAnimate()
   const { data: todos = [] } = api.todo.getAll.useQuery({
-    statuses: ['completed', 'pending'],
+    statuses: status === 'all' ? ['completed', 'pending'] : [status],
   })
 
   const { mutate: updateTodoStatus } = api.todoStatus.update.useMutation({
