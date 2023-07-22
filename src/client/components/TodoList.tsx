@@ -114,7 +114,9 @@ export const TodoList = ({ status }: Props) => {
 
             <label
               className={`block flex-1 pl-3 font-medium ${
-                todo.status === 'completed' ? 'line-through' : ''
+                todo.status === 'completed'
+                  ? 'text-gray-500 line-through'
+                  : 'text-gray-700'
               }`}
               htmlFor={String(todo.id)}
             >
